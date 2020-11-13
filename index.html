@@ -17,18 +17,19 @@
             const us = await fetch('https://unpkg.com/us-atlas/states-10m.json').then((r) => r.json());
             const nation = ChartGeo.topojson.feature(us, us.objects.nation).features[0];
             const states = ChartGeo.topojson.feature(us, us.objects.states).features;
-            const values = data;
-            console.log(data);
-            console.log(states);
 
-			const chart = new Chart(document.getElementById("usmap").getContext("2d"), {
+            const stateMap = {};
+            for (i = 0; i < data.length; i++) {
+                stateMap[data[i].state] = data[i].positive;
+            }
+            const chart = new Chart(document.getElementById("usmap").getContext("2d"), {
                 type: 'choropleth',
                 data: {
                     labels: states.map((d) => d.properties.name),
                     datasets: [{
                         label: 'States',
                         outline: nation,
-                        data: data.map((d) => ({ feature: d.state, value: d.positive }))
+                        data: states.map((s) => ({feature: s, value: stateMap[s.properties.name]}))
                     }]
                 },
                 options: {
@@ -42,14 +43,15 @@
                         colorScale: {
                             display: true,
                             position: 'bottom',
-                            quantize: 10,
+                            quantize: 200,
                             legend: {
                                 position: 'bottom-right'
                             }
                         }
                     }
                 }
-            })
+            });
+            console.log(chart.data.datasets[0].data);
         };
     </script>
 </head>
