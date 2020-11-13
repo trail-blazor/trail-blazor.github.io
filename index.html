@@ -25,7 +25,7 @@
                     datasets: [{
                         label: 'States',
                         outline: nation,
-                        data: states.map((d) => ({ feature: d, value: 10 }))
+                        data: data.map((d) => ({ feature: d.State, value: d.Positive }))
                     }]
                 },
                 options: {
