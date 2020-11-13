@@ -2,171 +2,170 @@
 @inject IJSRuntime JS;
 @inject HttpClient Http;
 
-<h3>US</h3>
-test
+<h2>US Cases by State as of @Today</h2>
 <canvas id="usmap"></canvas>
 @code {
+    string Today = DateTime.Today.ToString("MMM dd, yyyy");
+    private List<StateData> states = new List<StateData>();
 
-	private List<StateData> states = new List<StateData>();
+    protected override async Task OnInitializedAsync()
+    {
+        var tracking = await Http.GetFromJsonAsync<List<StateData>>("https://api.covidtracking.com/v1/states/current.json").ConfigureAwait(true);
 
-	protected override async Task OnInitializedAsync()
-	{
-		var tracking = await Http.GetFromJsonAsync<List<StateData>>("https://api.covidtracking.com/v1/states/current.json").ConfigureAwait(true);
+        foreach(var track in tracking)
+        {
+            StateData state = new StateData() { State = ConvertState(track.State), Positive = track.Positive };
+            if (state.State.Length > 2)
+                states.Add(state);
+            else
+                states.Add(state);
 
-		foreach(var track in tracking)
-		{
-			StateData state = new StateData() { State = ConvertState(track.State), Positive = track.Positive };
-			if (state.State.Length > 2)
-				states.Add(state);
-			else
-				states.Add(state);
-
-		}
+        }
 
 
-		await JS.InvokeVoidAsync("InitMapChart", states).ConfigureAwait(false);
-	}
+        await JS.InvokeVoidAsync("InitMapChart", states).ConfigureAwait(false);
+    }
 
-	public string ConvertState(string state)
-	{
-		switch (state)
-		{
-			case "AL":
-				return "Alabama";
-			case "AK":
-				return "Alaska";
-			case "AR":
-				return "Arkansas";
-			case "AZ":
-				return "Arizona";
-			case "CA":
-				return "California";
-			case "CO":
-				return "Colorado";
-			case "CT":
-				return "Connecticut";
-			case "DE":
-				return "Delaware";
-			case "FL":
-				return "Florida";
-			case "GA":
-				return "Georgia";
-			case "HI":
-				return "Hawaii";
-			case "ID":
-				return "Idaho";
-			case "IL":
-				return "Illinois";
-			case "IN":
-				return "Indiana";
-			case "IA":
-				return "Iowa";
-			case "KS":
-				return "Kansas";
-			case "KY":
-				return "Kentucky";
-			case "LA":
-				return "Louisiana";
-			case "ME":
-				return "Maine";
-			case "MD":
-				return "Maryland";
-			case "MA":
-				return "Massachusetts";
-			case "MI":
-				return "Michigan";
-			case "MN":
-				return "Minnesota";
-			case "MS":
-				return "Mississippi";
-			case "MO":
-				return "Missouri";
-			case "MT":
-				return "Montana";
-			case "NE":
-				return "Nebraska";
-			case "NV":
-				return "Nevada";
-			case "NH":
-				return "New Hampshire";
-			case "NJ":
-				return "New Jersey";
-			case "NM":
-				return "New Mexico";
-			case "NY":
-				return "New York";
-			case "NC":
-				return "North Carolina";
-			case "ND":
-				return "North Dakota";
-			case "OH":
-				return "Ohio";
-			case "OK":
-				return "Oklahoma";
-			case "OR":
-				return "Oregon";
-			case "PA":
-				return "Pennsylvania";
-			case "RI":
-				return "Rhode Island";
-			case "SC":
-				return "South Carolina";
-			case "SD":
-				return "South Dakota";
-			case "TN":
-				return "Tennessee";
-			case "TX":
-				return "Texas";
-			case "UT":
-				return "Utah";
-			case "VT":
-				return "Vermont";
-			case "VA":
-				return "Virginia";
-			case "WA":
-				return "Washington";
-			case "WV":
-				return "West Virginia";
-			case "WI":
-				return "Wisconsin";
-			case "WY":
-				return "Wyoming";
-			case "VI":
-				return "Unites States Virgin Islands";
-			case "PR":
-				return "Puerto Rico";
-			case "MP":
-				return "Commonwealth of the Northern Mariana Islands";
-			case "GU":
-				return "Guam";
-			case "AS":
-				return "American Samoa";
-			case "DC":
-				return "District of Columbia";
-			default:
-				return state;
-		}
-	}
-	public class StateData
-	{
-		public string State { get; set; }
-		public long Positive { get; set; }
-	}
+    public string ConvertState(string state)
+    {
+        switch (state)
+        {
+            case "AL":
+                return "Alabama";
+            case "AK":
+                return "Alaska";
+            case "AR":
+                return "Arkansas";
+            case "AZ":
+                return "Arizona";
+            case "CA":
+                return "California";
+            case "CO":
+                return "Colorado";
+            case "CT":
+                return "Connecticut";
+            case "DE":
+                return "Delaware";
+            case "FL":
+                return "Florida";
+            case "GA":
+                return "Georgia";
+            case "HI":
+                return "Hawaii";
+            case "ID":
+                return "Idaho";
+            case "IL":
+                return "Illinois";
+            case "IN":
+                return "Indiana";
+            case "IA":
+                return "Iowa";
+            case "KS":
+                return "Kansas";
+            case "KY":
+                return "Kentucky";
+            case "LA":
+                return "Louisiana";
+            case "ME":
+                return "Maine";
+            case "MD":
+                return "Maryland";
+            case "MA":
+                return "Massachusetts";
+            case "MI":
+                return "Michigan";
+            case "MN":
+                return "Minnesota";
+            case "MS":
+                return "Mississippi";
+            case "MO":
+                return "Missouri";
+            case "MT":
+                return "Montana";
+            case "NE":
+                return "Nebraska";
+            case "NV":
+                return "Nevada";
+            case "NH":
+                return "New Hampshire";
+            case "NJ":
+                return "New Jersey";
+            case "NM":
+                return "New Mexico";
+            case "NY":
+                return "New York";
+            case "NC":
+                return "North Carolina";
+            case "ND":
+                return "North Dakota";
+            case "OH":
+                return "Ohio";
+            case "OK":
+                return "Oklahoma";
+            case "OR":
+                return "Oregon";
+            case "PA":
+                return "Pennsylvania";
+            case "RI":
+                return "Rhode Island";
+            case "SC":
+                return "South Carolina";
+            case "SD":
+                return "South Dakota";
+            case "TN":
+                return "Tennessee";
+            case "TX":
+                return "Texas";
+            case "UT":
+                return "Utah";
+            case "VT":
+                return "Vermont";
+            case "VA":
+                return "Virginia";
+            case "WA":
+                return "Washington";
+            case "WV":
+                return "West Virginia";
+            case "WI":
+                return "Wisconsin";
+            case "WY":
+                return "Wyoming";
+            case "VI":
+                return "United States Virgin Islands";
+            case "PR":
+                return "Puerto Rico";
+            case "MP":
+                return "Commonwealth of the Northern Mariana Islands";
+            case "GU":
+                return "Guam";
+            case "AS":
+                return "American Samoa";
+            case "DC":
+                return "District of Columbia";
+            default:
+                return state;
+        }
+    }
+    public class StateData
+    {
+        public string State { get; set; }
+        public long Positive { get; set; }
+    }
 
-	public class CovidData
-	{
-		public string Date { get; set; }
-		public string State { get; set; }
-		public int Positive { get; set; }
-		public int Death { get; set; }
-		public int ProbableCases{ get; set; }
-		public int Negative { get; set; }
-		public string TotalTestResultsSource { get; set; }
-		public int TotalTestResults { get; set; }
-		public int HospitalzedCurrently { get; set; }
-		public int HospitalizedCumulative { get; set; }
-		public int InIcuCurrently { get; set; }
-		public int InIcuCumulative { get; set; }
-		public int OnVentilatorCurrently { get; set; }
-	}
+    public class CovidData
+    {
+        public string Date { get; set; }
+        public string State { get; set; }
+        public int Positive { get; set; }
+        public int Death { get; set; }
+        public int ProbableCases{ get; set; }
+        public int Negative { get; set; }
+        public string TotalTestResultsSource { get; set; }
+        public int TotalTestResults { get; set; }
+        public int HospitalzedCurrently { get; set; }
+        public int HospitalizedCumulative { get; set; }
+        public int InIcuCurrently { get; set; }
+        public int InIcuCumulative { get; set; }
+        public int OnVentilatorCurrently { get; set; }
+    }
 }
