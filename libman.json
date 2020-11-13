@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "chartjs-chart-geo@2.1.0",
+      "destination": "wwwroot/js-packages/chartjs-chart-geo/"
+    }
+  ]
+}

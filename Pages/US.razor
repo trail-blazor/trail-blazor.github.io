@@ -1,6 +1,12 @@
 ﻿@page "/us"
+@inject IJSRuntime JS;
+
 <h3>US</h3>
-
+test
+<canvas id="canvas"></canvas>
 @code {
-
+    protected override async Task OnInitializedAsync()
+    {
+        await JS.InvokeVoidAsync("InitChart", null).ConfigureAwait(false);
+    }
 }
