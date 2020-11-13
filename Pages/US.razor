@@ -4,7 +4,7 @@
 
 <h3>US</h3>
 test
-<canvas id="canvas"></canvas>
+<canvas id="usmap"></canvas>
 @code {
 
 	private List<StateData> states = new List<StateData>();
@@ -16,7 +16,9 @@ test
 		foreach(var track in tracking)
 		{
 			StateData state = new StateData() { State = ConvertState(track.State), Positive = track.Positive };
-			if(state.State.Length>2)
+			if (state.State.Length > 2)
+				states.Add(state);
+			else
 				states.Add(state);
 
 		}
@@ -129,6 +131,18 @@ test
 				return "Wisconsin";
 			case "WY":
 				return "Wyoming";
+			case "VI":
+				return "Unites States Virgin Islands";
+			case "PR":
+				return "Puerto Rico";
+			case "MP":
+				return "Commonwealth of the Northern Mariana Islands";
+			case "GU":
+				return "Guam";
+			case "AS":
+				return "American Samoa";
+			case "DC":
+				return "District of Columbia";
 			default:
 				return state;
 		}

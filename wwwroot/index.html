@@ -17,15 +17,18 @@
             const us = await fetch('https://unpkg.com/us-atlas/states-10m.json').then((r) => r.json());
             const nation = ChartGeo.topojson.feature(us, us.objects.nation).features[0];
             const states = ChartGeo.topojson.feature(us, us.objects.states).features;
+            const values = data;
+            console.log(data);
+            console.log(states);
 
-            const chart = new Chart(document.getElementById("canvas").getContext("2d"), {
+			const chart = new Chart(document.getElementById("usmap").getContext("2d"), {
                 type: 'choropleth',
                 data: {
                     labels: states.map((d) => d.properties.name),
                     datasets: [{
                         label: 'States',
                         outline: nation,
-                        data: data.map((d) => ({ feature: d.State, value: d.Positive }))
+                        data: data.map((d) => ({ feature: d.state, value: d.positive }))
                     }]
                 },
                 options: {
@@ -39,7 +42,7 @@
                         colorScale: {
                             display: true,
                             position: 'bottom',
-                            quantize: 5,
+                            quantize: 10,
                             legend: {
                                 position: 'bottom-right'
                             }
